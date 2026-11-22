@@ -1,0 +1,57 @@
+1. Base de données
+
+Dans phpMyAdmin, improrter schema.sql
+
+2. Backend (Terminal 1)
+cd projetintegrationbackend-main
+new file .env:
+
+
+# Copier ce fichier en .env (dans projetintegrationbackend-main) - ne jamais committer .env
+PORT=3000
+ 
+# MySQL (XAMPP par défaut: root + mot de passe vide)
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=psytech_pro
+ 
+# Secrets. JWT_SECRET: 32 caractères minimum.
+JWT_SECRET=changez-moi-avec-une-longue-chaine-aleatoire-de-32-caracteres-min
+KEY_SECRET=changez-moi-aussi
+JWT_EXPIRES_IN=8h
+ 
+# Super Admin créé par `npm run seed:admin` (mot de passe: 8 caractères minimum)
+ADMIN_IDENTIFIANT=superadmin
+ADMIN_PASSWORD=ChangeMe-12345
+ 
+# CORS: origines des 3 applications
+CORS_ORIGIN=http://localhost:5001,http://localhost:5002,http://localhost:5003
+ 
+# Anti brute-force login (tentatives / 15 min / IP)
+LOGIN_RATE_LIMIT=10
+ 
+# Lien envoyé aux candidats par email
+CANDIDAT_URL=http://localhost:5003
+ 
+# IA (génération de questions) - clé GRATUITE: https://aistudio.google.com/apikey
+GEMINI_API_KEY=
+AI_PROVIDER=gemini
+AI_MODEL=gemini-3.8-flash
+AI_MODEL_FALLBACK=gemini-3.5-flash-lite
+ 
+
+npm.cmd install
+npm.cmd run seed:admin
+npm.cmd start
+
+3. Application Admin (Terminal 2)
+cd gestion_admin
+flutter pub get
+flutter run -d chrome --web-port=5001 --dart-define=API_URL=http://localhost:3000
+
+4. Application Entreprise RH (Terminal 3)
+cd psytech_pro
+flutter pub get
+flutter run -d chrome --web-port=5002 --dart-define=API_URL=http://localhost:3000
